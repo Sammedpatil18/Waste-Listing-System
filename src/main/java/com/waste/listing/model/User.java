@@ -1,12 +1,14 @@
 package com.waste.listing.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class User {
     @Id
-    private Long id;
+    private String id;
     private String name;
     private String email;
     private String phoneNo;
@@ -14,11 +16,14 @@ public class User {
     private String CompanyName;
     private String city;
     
+    private List<Listing> listings;
+    private List<Bid> bids;
+    
 	public User() {
 	
 	}
 
-	public User(Long id, String name, String email, String phoneNo, String password, String companyName, String city) {
+	public User(String id, String name, String email, String phoneNo, String password, String companyName, String city) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -29,11 +34,11 @@ public class User {
 		this.city = city;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
