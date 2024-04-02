@@ -95,7 +95,10 @@ public class User {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", phoneNo=" + phoneNo + ", password="
 				+ password + ", CompanyName=" + CompanyName + ", city=" + city + "]";
 	}
-    
+
+	public List<Bid> getBids() {
+        return bids;
+    }
     
     
 }

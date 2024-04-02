@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.waste.listing.model.Bid;
 import com.waste.listing.model.Listing;
 import com.waste.listing.service.ListingService;
 
@@ -57,5 +58,12 @@ public class ListingController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
+    @GetMapping("/getbids/{listingId}")
+    public ResponseEntity<List<Bid>> getBidsForListing(@PathVariable String listingId) {
+        List<Bid> bids = listingService.getBidsForListing(listingId);
+        return new ResponseEntity<>(bids, HttpStatus.OK);
+    }
+
 
 }

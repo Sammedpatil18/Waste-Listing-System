@@ -5,6 +5,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,6 +56,25 @@ public class UserController {
         } catch (RuntimeException e) {
             // If login fails, return an error message
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getUserByID(@PathVariable("id") Long id) {
+        try {
+            // Fetch user by ID
+            User user = userService.getUserByID(id);
+
+            if (user != null) {
+                // Return the user in the response
+                return ResponseEntity.ok(user);
+            } else {
+                // If user not found, return a 404 Not Found response
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+        } catch (RuntimeException e) {
+            // If an error occurs, return an error message
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
         }
     }
 }

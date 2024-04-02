@@ -6,8 +6,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.waste.listing.model.Bid;
 import com.waste.listing.model.Listing;
 import com.waste.listing.model.User;
+import com.waste.listing.repository.BidRepository;
 import com.waste.listing.repository.ListingRepository;
 import com.waste.listing.repository.UserRepository;
 
@@ -17,6 +19,9 @@ public class ListingService {
 	@Autowired
 	private ListingRepository listingRepository;
 
+    @Autowired
+    private BidRepository bidRepository;
+    
 	@Autowired
 	private UserRepository userRepository;
 
@@ -77,4 +82,36 @@ public class ListingService {
         listing.setLocationShop(updatedListing.getLocationShop());
         listing.setPickupLocation(updatedListing.getPickupLocation());
     }
+    
+
+    public List<Bid> getBidsForListing(String listingId) {
+        // Retrieve bids for the specified listingId from the database using the bid repository
+        return bidRepository.findByListingId(listingId);
+    }
+    
+    public void acceptBid(String listingId, String bidId) {
+    
+        Listing listing = listingRepository.findById(listingId)
+                .orElseThrow(() -> new RuntimeException("Listing not found with id: " + listingId));
+
+        // Retrieve the bid from the database
+        Bid bid = bidRepository.findById(bidId)
+                .orElseThrow(() -> new RuntimeException("Bid not found with id: " + bidId)); bid.setAccepted(true);
+
+        bidRepository.save(bid);
+    }
+
+    public void rejectBid(String listingId, String bidId) {
+        // Retrieve the listing from the database
+        Listing listing = listingRepository.findById(listingId)
+                .orElseThrow(() -> new RuntimeException("Listing not found with id: " + listingId));
+
+        Bid bid = bidRepository.findById(bidId)
+                .orElseThrow(() -> new RuntimeException("Bid not found with id: " + bidId));
+
+         bid.setAccepted(false);
+         
+        bidRepository.save(bid);
+    }
+
 }
