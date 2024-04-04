@@ -1,5 +1,6 @@
 package com.waste.listing.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -20,9 +21,12 @@ public class User {
     private List<Bid> bids;
     
 	public User() {
-	
+		this.bids = new ArrayList<>();
 	}
 
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
+    }
 	public User(String id, String name, String email, String phoneNo, String password, String companyName, String city) {
 		super();
 		this.id = id;
@@ -89,6 +93,8 @@ public class User {
 	public void setCity(String city) {
 		this.city = city;
 	}
+	
+	
 
 	@Override
 	public String toString() {

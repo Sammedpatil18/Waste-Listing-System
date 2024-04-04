@@ -25,17 +25,25 @@ public class BidController {
     public Bid placeBid(@RequestBody Map<String, Object> requestData) {
         String listingId = (String) requestData.get("listingId");
         double amount = (double) requestData.get("amount");
-        return bidService.placeBid(listingId, amount);
+        int bidQuantity = (int) requestData.get("bidQuantity");
+        String userId = (String) requestData.get("userId");
+        return bidService.placeBid(listingId, amount, bidQuantity, userId);
     }
-
-
+    
     @GetMapping("/listing/{listingId}")
     public List<Bid> getBidsForListing(@PathVariable String listingId) {
         return bidService.getBidsForListing(listingId);
     }
 
-    @PostMapping("/accept/{userId}")
-    public void acceptBid(@PathVariable String userId, @RequestBody Bid bid) {
-        bidService.acceptBid(userId, bid);
+    @PostMapping("/accept")
+    public void acceptBid(@RequestBody Map<String, String> requestData) {
+        String userId = requestData.get("userId");
+        String bidId = requestData.get("bidId");
+        bidService.acceptBid(userId, bidId);
+    }
+    
+    @PostMapping("/reject/{userId}/{bidId}")
+    public void rejectBid(@PathVariable String userId, @PathVariable String bidId) {
+        bidService.rejectBid(userId, bidId);
     }
 }

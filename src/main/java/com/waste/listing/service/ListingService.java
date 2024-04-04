@@ -84,34 +84,45 @@ public class ListingService {
     }
     
 
-    public List<Bid> getBidsForListing(String listingId) {
-        // Retrieve bids for the specified listingId from the database using the bid repository
-        return bidRepository.findByListingId(listingId);
-    }
-    
-    public void acceptBid(String listingId, String bidId) {
-    
-        Listing listing = listingRepository.findById(listingId)
-                .orElseThrow(() -> new RuntimeException("Listing not found with id: " + listingId));
-
-        // Retrieve the bid from the database
-        Bid bid = bidRepository.findById(bidId)
-                .orElseThrow(() -> new RuntimeException("Bid not found with id: " + bidId)); bid.setAccepted(true);
-
-        bidRepository.save(bid);
-    }
-
-    public void rejectBid(String listingId, String bidId) {
-        // Retrieve the listing from the database
-        Listing listing = listingRepository.findById(listingId)
-                .orElseThrow(() -> new RuntimeException("Listing not found with id: " + listingId));
-
+    public void acceptBid(String bidId ) {
+        // Get the bid by bidId
         Bid bid = bidRepository.findById(bidId)
                 .orElseThrow(() -> new RuntimeException("Bid not found with id: " + bidId));
 
-         bid.setAccepted(false);
-         
+        // Get the user by userId from the bid
+        String userId = bid.getUserId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        // Check if the bid has already been accepted
+        if (bid.isAccepted()) {
+            System.out.println("Bid has already been accepted.");
+            return;
+        }
+
+        // Mark the bid as accepted
+        bid.setAccepted(true);
+
+        // Deduct price and quantity from the listing
+        Listing listing = bid.getListing();
+        int updatedQuantity = listing.getWasteQuantity() - bid.getBidQuantity();
+        double totalPrice = bid.getBidAmount() * bid.getBidQuantity();
+        double updatedPrice = listing.getPrice() - totalPrice;
+
+        // Update the listing
+        listing.setWasteQuantity(updatedQuantity);
+        listing.setPrice(updatedPrice);
+
+        // Save the updated listing
+        listingRepository.save(listing);
+
+        // Update the bid
         bidRepository.save(bid);
+
+        System.out.println("Bid accepted successfully.");
     }
+
+
+
 
 }

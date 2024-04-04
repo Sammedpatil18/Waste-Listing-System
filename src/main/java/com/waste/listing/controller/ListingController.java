@@ -1,6 +1,7 @@
 package com.waste.listing.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.waste.listing.model.Bid;
 import com.waste.listing.model.Listing;
 import com.waste.listing.service.ListingService;
 
@@ -59,11 +59,19 @@ public class ListingController {
         }
     }
     
-    @GetMapping("/getbids/{listingId}")
-    public ResponseEntity<List<Bid>> getBidsForListing(@PathVariable String listingId) {
-        List<Bid> bids = listingService.getBidsForListing(listingId);
-        return new ResponseEntity<>(bids, HttpStatus.OK);
+
+    @PostMapping("/accept")
+    public ResponseEntity<String> acceptBidForListing(@RequestBody Map<String, String> requestData) {
+        String bidId = requestData.get("bidId");
+        listingService.acceptBid(bidId);
+        return ResponseEntity.status(HttpStatus.OK).body("Bid accepted successfully.");
     }
+    
+//    @GetMapping("/getbids/{listingId}")
+//    public ResponseEntity<List<Bid>> getBidsForListing(@PathVariable String listingId) {
+//        List<Bid> bids = listingService.getBidsForListing(listingId);
+//        return new ResponseEntity<>(bids, HttpStatus.OK);
+//    }
 
 
 }

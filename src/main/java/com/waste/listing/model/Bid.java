@@ -11,8 +11,7 @@ public class Bid {
     private double bidAmount;
     private int bidQuantity;
     private boolean isAccepted;
-    @DBRef
-    private User user;
+    private String userId;
     @DBRef
     private Listing listing;
 
@@ -20,55 +19,35 @@ public class Bid {
     	
     }
 
-    public Bid(String id, double bidAmount, int bidQuantity, boolean accepted, User user, Listing listing) {
-        this.id = id;
-        this.bidAmount = bidAmount;
-        this.bidQuantity = bidQuantity;
-        this.isAccepted = accepted;
-        this.user = user;
-        this.listing = listing;
-    }
+	@Override
+	public String toString() {
+		return "Bid [id=" + id + ", bidAmount=" + bidAmount + ", bidQuantity=" + bidQuantity + ", isAccepted="
+				+ isAccepted + ", userId=" + userId + ", listing=" + listing + "]";
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public double getBidAmount() {
-        return bidAmount;
-    }
+	public double getBidAmount() {
+		return bidAmount;
+	}
 
-    public void setBidAmount(double bidAmount) {
-        this.bidAmount = bidAmount;
-    }
+	public void setBidAmount(double bidAmount) {
+		this.bidAmount = bidAmount;
+	}
 
-    public int getBidQuantity() {
-        return bidQuantity;
-    }
+	public int getBidQuantity() {
+		return bidQuantity;
+	}
 
-    public void setBidQuantity(int bidQuantity) {
-        this.bidQuantity = bidQuantity;
-    }
-
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Listing getListing() {
-        return listing;
-    }
-
-    public void setListing(Listing listing) {
-        this.listing = listing;
-    }
+	public void setBidQuantity(int bidQuantity) {
+		this.bidQuantity = bidQuantity;
+	}
 
 	public boolean isAccepted() {
 		return isAccepted;
@@ -78,10 +57,20 @@ public class Bid {
 		this.isAccepted = isAccepted;
 	}
 
-	@Override
-	public String toString() {
-		return "Bid [id=" + id + ", bidAmount=" + bidAmount + ", bidQuantity=" + bidQuantity + ", isAccepted="
-				+ isAccepted + ", user=" + user + ", listing=" + listing + "]";
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public Listing getListing() {
+		return listing;
+	}
+
+	public void setListing(Listing listing) {
+		this.listing = listing;
 	}
 
   
