@@ -3,7 +3,6 @@ package com.waste.listing.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.waste.listing.exception.UserRegistrationException;
 import com.waste.listing.model.User;
 import com.waste.listing.repository.UserRepository;
 
@@ -17,9 +16,9 @@ public class UserService {
 	        this.userRepository = userRepository;
 	    }
 
-	    public User register(User user) throws UserRegistrationException {
+	    public User register(User user) throws RuntimeException {
 	        if (userRepository.findByEmail(user.getEmail()) != null) {
-	            throw new UserRegistrationException("Email is already registered");
+	            throw new RuntimeException("Email is already registered");
 	        }
 
 	        return userRepository.save(user);
